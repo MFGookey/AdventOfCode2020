@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit;
 using sut = AdventCalculator.Core.Selector;
 
-namespace AdventCalculatorTests.Selector
+namespace AdventCalculator.Core.Tests.Selector
 {
   public class SelectorTests
   {

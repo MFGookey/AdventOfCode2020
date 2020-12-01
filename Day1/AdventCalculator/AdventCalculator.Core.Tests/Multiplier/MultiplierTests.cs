@@ -2,7 +2,7 @@
 using Xunit;
 using sut = AdventCalculator.Core.Multiplier;
 
-namespace AdventCalculatorTests.Multiplier
+namespace AdventCalculator.Core.Tests.Multiplier
 {
   public class MultiplierTests
   {
