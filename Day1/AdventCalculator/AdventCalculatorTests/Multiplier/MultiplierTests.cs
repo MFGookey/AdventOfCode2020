@@ -32,7 +32,10 @@ namespace AdventCalculatorTests.Multiplier
 
     [Theory]
     [MemberData(nameof(ValidOptions))]
-    void Multiply_ValidMultiplicands_ReturnsProduct(IList<int> multiplicands, int expectedProduct)
+    void Multiply_ValidMultiplicands_ReturnsProduct(
+      IList<int> multiplicands,
+      int expectedProduct
+    )
     {
       var sut = new sut.Multiplier();
       var result = sut.Multiply(multiplicands);
@@ -44,20 +47,57 @@ namespace AdventCalculatorTests.Multiplier
     {
       get
       {
-        yield return new object[] { new List<int> { 1, 2, 3 }, 6 };
-        yield return new object[] { new List<int> { -1, 1, 5, 6 }, -30 };
-        yield return new object[] { new List<int> { 1, 1, 1, 1, 1 }, 1};
+        yield return new object[] {
+          new List<int> { 1, 2, 3 },
+          6
+        };
+
+        yield return new object[] {
+          new List<int> { 2, 3 },
+          6
+        };
+
+        yield return new object[] {
+          new List<int> { -1, 1, 5, 6 },
+          -30
+        };
+
+        yield return new object[] {
+          new List<int> { 1, 1, 1, 1, 1 },
+          1
+        };
 
         // Provided by the Day 1 problem 1 description itself
-        yield return new object[] { new List<int> { 1721, 299 }, 514579 };
+        yield return new object[] {
+          new List<int> { 1721, 299 },
+          514579
+        };
         
-        yield return new object[] { new List<int> { 1721, 979, 366 }, 616658394 };
-        yield return new object[] { new List<int> { 1, -1 }, -1 };
-        yield return new object[] { new List<int> { -2, -2 }, 4 };
-        yield return new object[] { new List<int> { -2, -2, -5 }, -20 };
+        yield return new object[] {
+          new List<int> { 1721, 979, 366 },
+          616658394
+        };
+
+        yield return new object[] {
+          new List<int> { 1, -1 },
+          -1
+        };
+
+        yield return new object[] {
+          new List<int> { -2, -2 },
+          4
+        };
+
+        yield return new object[] {
+          new List<int> { -2, -2, -5 },
+          -20
+        };
 
         // Provided by the Day 1 problem 2 description itself
-        yield return new object[] { new List<int> { 979, 366, 675 }, 241861950 };
+        yield return new object[] {
+          new List<int> { 979, 366, 675 },
+          241861950
+        };
       }
     }
   }
