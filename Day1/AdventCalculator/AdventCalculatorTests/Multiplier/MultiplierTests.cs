@@ -41,7 +41,10 @@ namespace AdventCalculatorTests.Multiplier
         yield return new object[] { new List<int> { 1, 2, 3 }, 6 };
         yield return new object[] { new List<int> { -1, 1, 5, 6 }, -30 };
         yield return new object[] { new List<int> { 1, 1, 1, 1, 1 }, 1};
+
+        // Provided by the Day 1 problem 1 description itself
         yield return new object[] { new List<int> { 1721, 299 }, 514579 };
+        
         yield return new object[] { new List<int> { 1721, 979, 366 }, 616658394 };
         yield return new object[] { new List<int> { 1, -1 }, -1 };
         yield return new object[] { new List<int> { -2, -2 }, 4 };

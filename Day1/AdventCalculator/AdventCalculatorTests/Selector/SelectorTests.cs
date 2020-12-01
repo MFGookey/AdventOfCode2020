@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using sut = AdventCalculator.Core.Selector;
 
@@ -71,14 +70,8 @@ namespace AdventCalculatorTests.Selector
       var sut = new sut.Selector();
       var result = sut.SumFinder(haystack, needle, totalTerms);
 
-      int resultSum = 0;
-      foreach (var i in result)
-      {
-        resultSum += i;
-      }
-
       Assert.Equal(totalTerms, result.Count);
-      Assert.Equal(needle, resultSum);
+      Assert.Equal(needle, result.Sum());
     }
 
     public static IEnumerable<object[]> ValidOptions {
@@ -87,7 +80,10 @@ namespace AdventCalculatorTests.Selector
         yield return new object[] { new List<int> { 1, 2, 3 }, 4, 2 };
         yield return new object[] { new List<int> { -1, 1, 5, 6 }, 5, 2 };
         yield return new object[] { new List<int> { 1, 1, 1, 1, 1 }, 4, 4};
+        
+        // Provided by the Day 1 problem 1 description itself
         yield return new object[] { new List<int> { 1721, 979, 366, 299, 675, 1456 }, 2020, 2 };
+        
         yield return new object[] { new List<int> { 1721, 979, 366, 299, 675, 1456 }, 665, 2 };
         yield return new object[] { new List<int> { 1721, 979, 366, 299, -675, 1456 }, 670, 3 };
         yield return new object[] { new List<int> { 1721, 979, 366, -299, -675, 1456 }, -974, 2 };
