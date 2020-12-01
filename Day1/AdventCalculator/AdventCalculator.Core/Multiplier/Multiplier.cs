@@ -9,11 +9,13 @@ namespace AdventCalculator.Core.Multiplier
     /// <inheritdoc/>
     public int? Multiply(IList<int> multiplicands)
     {
-      var result = multiplicands?.Cast<int?>().FirstOrDefault();
-
-      if (multiplicands is null == false)
+      int? result = null;
+      
+      if (multiplicands is null == false && multiplicands.Count >= 2)
       {
-        foreach (var multiplicand in multiplicands?.Skip(1))
+        result = multiplicands.First() * multiplicands.Skip(1).First();
+
+        foreach (var multiplicand in multiplicands.Skip(2))
         {
           result *= multiplicand;
         }
