@@ -5,8 +5,15 @@ using System.Collections.Generic;
 
 namespace AdventCalculator
 {
+  /// <summary>
+  /// Run the application for the Advent of Code
+  /// </summary>
   public class Program
   {
+    /// <summary>
+    /// The main entry point
+    /// </summary>
+    /// <param name="args">Not currently used</param>
     static void Main(string[] args)
     {
       var inputs = new List<int> {
@@ -215,10 +222,12 @@ namespace AdventCalculator
       ISelector selector = new Selector();
       IMultiplier multiplier = new Multiplier();
 
+      // Problem 1, find a pair of numbers that sum to 2020 and multiply them together
       var products = selector.SumFinder(inputs, 2020, 2);
       var result = multiplier.Multiply(products);
       Console.WriteLine(result);
 
+      // Problem 2, find a trio of numbers that sum to 2020 and multiply them together
       products = selector.SumFinder(inputs, 2020, 3);
       result = multiplier.Multiply(products);
       Console.WriteLine(result);

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AdventCalculator.Core.Selector
 {
+  /// <inheritdoc/>
   public class Selector : ISelector
   {
     /// <inheritdoc/>

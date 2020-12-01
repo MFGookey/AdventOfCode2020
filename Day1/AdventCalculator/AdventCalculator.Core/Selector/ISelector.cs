@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AdventCalculator.Core.Selector
 {
+  /// <summary>
+  /// Given a list of integers, select some which satisfy a given property
+  /// </summary>
   public interface ISelector
   {
     /// <summary>

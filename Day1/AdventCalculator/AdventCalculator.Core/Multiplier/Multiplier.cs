@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AdventCalculator.Core.Multiplier
 {
+  /// <inheritdoc/>
   public class Multiplier : IMultiplier
   {
+    /// <inheritdoc/>
     public int? Multiply(IList<int> multiplicands)
     {
       var result = multiplicands?.Cast<int?>().FirstOrDefault();
