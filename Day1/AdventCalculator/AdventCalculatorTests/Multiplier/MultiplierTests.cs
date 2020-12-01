@@ -7,6 +7,14 @@ namespace AdventCalculatorTests.Multiplier
   public class MultiplierTests
   {
     [Fact]
+    void Multiply_NullMultiplicands_ReturnsNull()
+    {
+      var sut = new sut.Multiplier();
+      var result = sut.Multiply(null);
+      Assert.Null(result);
+    }
+
+    [Fact]
     void Multiply_EmptyMultiplicands_ReturnsNull()
     {
       var sut = new sut.Multiplier();
@@ -15,10 +23,10 @@ namespace AdventCalculatorTests.Multiplier
     }
 
     [Fact]
-    void Multiply_NullMultiplicands_ReturnsNull()
+    void Multiply_SingleMultiplicand_ReturnsNull()
     {
       var sut = new sut.Multiplier();
-      var result = sut.Multiply(null);
+      var result = sut.Multiply(new List<int> { 42 });
       Assert.Null(result);
     }
 
