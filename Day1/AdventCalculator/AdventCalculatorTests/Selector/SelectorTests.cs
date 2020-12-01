@@ -87,6 +87,9 @@ namespace AdventCalculatorTests.Selector
         yield return new object[] { new List<int> { 1721, 979, 366, 299, 675, 1456 }, 665, 2 };
         yield return new object[] { new List<int> { 1721, 979, 366, 299, -675, 1456 }, 670, 3 };
         yield return new object[] { new List<int> { 1721, 979, 366, -299, -675, 1456 }, -974, 2 };
+
+        // Provided by the Day 2 problem 2 description itself
+        yield return new object[] { new List<int> { 1721, 979, 366, 299, 675, 1456 }, 2020, 3 };
       }
     }
   }

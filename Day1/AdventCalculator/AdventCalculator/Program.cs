@@ -218,6 +218,10 @@ namespace AdventCalculator
       var products = selector.SumFinder(inputs, 2020, 2);
       var result = multiplier.Multiply(products);
       Console.WriteLine(result);
+
+      products = selector.SumFinder(inputs, 2020, 3);
+      result = multiplier.Multiply(products);
+      Console.WriteLine(result);
     }
   }
 }
