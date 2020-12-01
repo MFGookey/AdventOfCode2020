@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventCalculator", "AdventCalculator\AdventCalculator.csproj", "{2E74F8AA-0210-402E-A6C0-9D762A562C29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventCalculatorTests", "AdventCalculatorTests\AdventCalculatorTests.csproj", "{CC25D7C5-5491-4A58-874C-9614150CE59E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventCalculator.Core", "AdventCalculator.Core\AdventCalculator.Core.csproj", "{168ED69D-6682-4932-8F98-5947879D66ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E74F8AA-0210-402E-A6C0-9D762A562C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E74F8AA-0210-402E-A6C0-9D762A562C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E74F8AA-0210-402E-A6C0-9D762A562C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E74F8AA-0210-402E-A6C0-9D762A562C29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC25D7C5-5491-4A58-874C-9614150CE59E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC25D7C5-5491-4A58-874C-9614150CE59E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC25D7C5-5491-4A58-874C-9614150CE59E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC25D7C5-5491-4A58-874C-9614150CE59E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{168ED69D-6682-4932-8F98-5947879D66ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{168ED69D-6682-4932-8F98-5947879D66ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{168ED69D-6682-4932-8F98-5947879D66ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168ED69D-6682-4932-8F98-5947879D66ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FACA4FC-8FBD-4710-A46E-23CB8FD580EC}
+	EndGlobalSection
+EndGlobal
