@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Utilities.IO;
 using System;
 using Moq;
+using PasswordEvaluator.Core.Policy;
 
 namespace PasswordEvaluator.Core.Tests.Database
 {
@@ -18,6 +19,7 @@ namespace PasswordEvaluator.Core.Tests.Database
     {
       var sut = new sut.Database();
       Assert.NotNull(sut.Passwords);
+      Assert.Empty(sut.Passwords);
     }
 
     [Fact]
@@ -26,7 +28,11 @@ namespace PasswordEvaluator.Core.Tests.Database
       var passwordList = new List<IPassword>();
       passwordList.Add(new Password("1-2 a: aabuiyoiuy"));
 
-      var sut = new sut.Database(passwordList, new FileReader());
+      var sut = new sut.Database(
+        passwordList,
+        new FileReader(),
+        new CharacterFrequencyPasswordPolicyFactory()
+      );
 
       foreach (var password in passwordList)
       {
@@ -84,6 +90,8 @@ namespace PasswordEvaluator.Core.Tests.Database
     {
       var list = new List<IPassword>();
       var reader = new Mock<IFileReader>();
+      var factory = new CharacterPositionPasswordPolicyFactory();
+
       reader.Setup(r => r.ReadFileByLines(It.IsAny<string>())).Returns(new string[]
       {
         "1-3 a: abcde",
@@ -91,7 +99,7 @@ namespace PasswordEvaluator.Core.Tests.Database
         "2-9 c: ccccccccc"
       });
 
-      var sut = new sut.Database(list, reader.Object);
+      var sut = new sut.Database(list, reader.Object, factory);
 
       Assert.Empty(sut.Passwords);
 
@@ -99,9 +107,9 @@ namespace PasswordEvaluator.Core.Tests.Database
 
       Assert.NotEmpty(sut.Passwords);
       Assert.Equal(3, sut.Passwords.Count);
-      Assert.Contains(new Password("1-3 a: abcde"), sut.Passwords);
-      Assert.Contains(new Password("1-3 b: cdefg"), sut.Passwords);
-      Assert.Contains(new Password("2-9 c: ccccccccc"), sut.Passwords);
+      Assert.Contains(new Password("1-3 a: abcde", factory), sut.Passwords);
+      Assert.Contains(new Password("1-3 b: cdefg", factory), sut.Passwords);
+      Assert.Contains(new Password("2-9 c: ccccccccc", factory), sut.Passwords);
     }
 
     [Fact]
@@ -109,6 +117,7 @@ namespace PasswordEvaluator.Core.Tests.Database
     {
       var list = new List<IPassword>();
       var reader = new Mock<IFileReader>();
+      var factory = new CharacterFrequencyPasswordPolicyFactory();
       reader.Setup(r => r.ReadFileByLines(It.IsAny<string>())).Returns(new string[]
       {
         "1-3 a: abcde",
@@ -117,7 +126,7 @@ namespace PasswordEvaluator.Core.Tests.Database
         "asdasfgasfasdfas"
       });
 
-      var sut = new sut.Database(list, reader.Object);
+      var sut = new sut.Database(list, reader.Object, factory);
 
       Assert.Empty(sut.Passwords);
 
@@ -145,6 +154,12 @@ namespace PasswordEvaluator.Core.Tests.Database
       Assert.Contains(new Password("1-3 a: abcde"), sut.Passwords);
       Assert.Contains(new Password("1-3 b: cdefg"), sut.Passwords);
       Assert.Contains(new Password("2-9 c: ccccccccc"), sut.Passwords);
+
+      var factory = new CharacterPositionPasswordPolicyFactory();
+
+      Assert.DoesNotContain(new Password("1-3 a: abcde", factory), sut.Passwords);
+      Assert.DoesNotContain(new Password("1-3 b: cdefg", factory), sut.Passwords);
+      Assert.DoesNotContain(new Password("2-9 c: ccccccccc", factory), sut.Passwords);
     }
 
     [Fact]

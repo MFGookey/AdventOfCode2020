@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PasswordEvaluator.Core.Policy.Model;
+using PasswordEvaluator.Core.Policy;
 using Utilities.IO;
 
 namespace PasswordEvaluator.Core.Database
@@ -18,6 +19,7 @@ namespace PasswordEvaluator.Core.Database
 
     private List<IPassword> _passwords;
     private IFileReader _fileReader;
+    private IPasswordPolicyFactory _passwordPolicyFactory;
 
     /// <summary>
     /// Initializes a new instance of the database with an empty Passwords collection
@@ -26,20 +28,24 @@ namespace PasswordEvaluator.Core.Database
     {
       _passwords = new List<IPassword>();
       _fileReader = new FileReader();
+      _passwordPolicyFactory = new CharacterFrequencyPasswordPolicyFactory();
     }
 
     /// <summary>
-    /// Initializes a new instance of the database with a given Passwords collection, and file reader
+    /// Initializes a new instance of the database with a given Passwords collection, file reader, and password policy factory
     /// </summary>
     /// <param name="passwords">The list of passwords to automatically include</param>
     /// <param name="fileReader">The fileReader the database should use for imports</param>
+    /// <param name="passwordPolicyFactory">The fileReader the database should use for imports</param>
     public Database(
       List<IPassword> passwords,
-      IFileReader fileReader
-      )
+      IFileReader fileReader,
+      IPasswordPolicyFactory passwordPolicyFactory
+    )
     {
       _passwords = passwords;
       _fileReader = fileReader;
+      _passwordPolicyFactory = passwordPolicyFactory;
     }
 
     /// <inheritdoc/>
@@ -51,7 +57,7 @@ namespace PasswordEvaluator.Core.Database
     /// <inheritdoc/>
     public void Add(string passwordPolicyCombo)
     {
-      this.Add(new Password(passwordPolicyCombo));
+      this.Add(new Password(passwordPolicyCombo, _passwordPolicyFactory));
     }
 
     /// <inheritdoc/>
@@ -69,7 +75,7 @@ namespace PasswordEvaluator.Core.Database
       // Add this atomically.  If any fail to parse, abandon the work.
       foreach (var combination in passwordPolicyCombinations)
       {
-        pendingList.Add(new Password(combination));
+        pendingList.Add(new Password(combination, _passwordPolicyFactory));
       }
 
       _passwords.AddRange(pendingList);

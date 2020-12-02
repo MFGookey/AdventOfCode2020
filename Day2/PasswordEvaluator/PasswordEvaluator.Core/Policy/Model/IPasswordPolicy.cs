@@ -14,17 +14,17 @@
     }
 
     /// <summary>
-    /// Gets the minimum number of instances of the required character that must be present in a password in order to be valid by policy
+    /// Gets the lower number of the implementation-specific policy
     /// </summary>
-    int MinimumInstances
+    int LowerNumber
     {
       get;
     }
 
     /// <summary>
-    /// Gets the maximum number of instances of the required character that must be present in a password in order to be valid by policy
+    /// Gets the upper number of the implementation-specific policy
     /// </summary>
-    int MaximumInstances
+    int UpperNumber
     {
       get;
     }

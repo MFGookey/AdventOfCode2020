@@ -1,6 +1,7 @@
 ﻿using System;
 using Xunit;
 using sut = PasswordEvaluator.Core.Policy.Model;
+using PasswordEvaluator.Core.Policy;
 
 namespace PasswordEvaluator.Core.Tests.Policy.Model
 {
@@ -12,7 +13,7 @@ namespace PasswordEvaluator.Core.Tests.Policy.Model
     [Fact]
     public void PasswordGranularConstructor_GivenValidItems_SetsAppropriately()
     {
-      var policy = new sut.PasswordPolicy('a', 1, 2);
+      var policy = new sut.CharacterFrequencyPasswordPolicy('a', 1, 2);
       var sut = new sut.Password(policy, "a");
       Assert.Equal(policy, sut.PasswordPolicy);
       Assert.Equal("a", sut.PasswordCandidate);
@@ -25,9 +26,24 @@ namespace PasswordEvaluator.Core.Tests.Policy.Model
       var password = "abbbbbc";
 
       var sut = new sut.Password(policyString, password);
-      var policy = new sut.PasswordPolicy(policyString);
+      var policy = new sut.CharacterFrequencyPasswordPolicy(policyString);
 
       Assert.Equal(policy, sut.PasswordPolicy);
+      Assert.Equal(password, sut.PasswordCandidate);
+    }
+
+    [Fact]
+    public void PasswordMultiStringAndFactoryConstructor_GivenValidItems_SetsAppropriately()
+    {
+      var policyString = "5-9 b";
+      var password = "abbbbbc";
+      var factory = new CharacterPositionPasswordPolicyFactory();
+
+      var sut = new sut.Password(policyString, password, factory);
+      var policy = new sut.CharacterPositionPasswordPolicy(policyString);
+      var nonMatchingPolicy = new sut.CharacterFrequencyPasswordPolicy(policyString);
+      Assert.Equal(policy, sut.PasswordPolicy);
+      Assert.NotEqual(nonMatchingPolicy, sut.PasswordPolicy);
       Assert.Equal(password, sut.PasswordCandidate);
     }
 
@@ -36,7 +52,7 @@ namespace PasswordEvaluator.Core.Tests.Policy.Model
     {
       var policyString = "1-3 a";
       var passwordCandidate = "abcde";
-      var policy = new sut.PasswordPolicy(policyString);
+      var policy = new sut.CharacterFrequencyPasswordPolicy(policyString);
 
       var policyPasswordString = string.Format("{0}: {1}", policyString, passwordCandidate);
 
