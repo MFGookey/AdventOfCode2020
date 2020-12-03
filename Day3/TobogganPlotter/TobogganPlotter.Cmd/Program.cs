@@ -30,7 +30,7 @@ namespace TobogganPlotter.Cmd
 
         var treeCount = run.TreeCount(possibleRun);
         currentProduct *= treeCount;
-        Console.WriteLine(treeCount);
+        Console.WriteLine($"Move: {possibleRun}\tTrees: {treeCount}");
       }
 
       Console.WriteLine(currentProduct);
