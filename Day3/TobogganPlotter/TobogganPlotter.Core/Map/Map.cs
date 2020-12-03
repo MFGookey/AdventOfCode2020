@@ -119,7 +119,12 @@ namespace TobogganPlotter.Core.Map
     /// <inheritdoc/>
     public void LoadMap(string mapString)
     {
-      MapData = mapString.Split('\n');
+      MapData = mapString
+        .Split('\n')
+        .Select(s => s.Replace("\n", string.Empty))
+        .Select(s => s.Replace("\r", string.Empty))
+        .ToArray();
+      ;
     }
 
     /// <inheritdoc/>

@@ -1,4 +1,5 @@
 ﻿using System;
+using TobogganPlotter.Core;
 using TobogganPlotter.Core.Map;
 using TobogganPlotter.Core.Map.Model;
 
@@ -9,23 +10,30 @@ namespace TobogganPlotter.Cmd
     static void Main(string[] args)
     {
       var move = new Point(3, 1);
-      var currentPoint = new Point(0, 0);
       var map = new HorizontalTilingMap();
       map.LoadMapFile(@"C:\Dev\GitHub\AdventOfCode2020\Day3\Data\input");
-      var treeCount = 0;
-      
-      while (currentPoint.Y < map.MapYSize)
-      {
-        var symbol = map.GetMapCell(currentPoint);
-        if (symbol == '#')
-        {
-          treeCount++;
-        }
+      var run = new TobogganRun(map);
 
-        currentPoint += move;
+      var possibleRuns = new Point[]
+      {
+        new Point(1,1),
+        new Point(3,1),
+        new Point(5,1),
+        new Point(7,1),
+        new Point(1,2)
+      };
+
+      var currentProduct = 1;
+
+      foreach (var possibleRun in possibleRuns)
+      {
+
+        var treeCount = run.TreeCount(possibleRun);
+        currentProduct *= treeCount;
+        Console.WriteLine(treeCount);
       }
 
-      Console.WriteLine(treeCount);
+      Console.WriteLine(currentProduct);
     }
   }
 }
