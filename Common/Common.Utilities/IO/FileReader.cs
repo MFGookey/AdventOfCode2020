@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 
-namespace Utilities.IO
+namespace Common.Utilities.IO
 {
   /// <inheritdoc/>
   public class FileReader : IFileReader
