@@ -4,7 +4,7 @@ using PasswordEvaluator.Core.Policy.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities.IO;
+using Common.Utilities.IO;
 
 namespace PasswordEvaluator.Cmd
 {

@@ -2,7 +2,7 @@
 using PasswordEvaluator.Core.Policy.Model;
 using Xunit;
 using System.Collections.Generic;
-using Utilities.IO;
+using Common.Utilities.IO;
 using System;
 using Moq;
 using PasswordEvaluator.Core.Policy;

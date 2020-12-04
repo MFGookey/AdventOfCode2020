@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using PasswordEvaluator.Core.Policy.Model;
 using PasswordEvaluator.Core.Policy;
-using Utilities.IO;
+using Common.Utilities.IO;
 
 namespace PasswordEvaluator.Core.Database
 {
