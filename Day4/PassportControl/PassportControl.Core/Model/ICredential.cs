@@ -14,6 +14,14 @@
     }
 
     /// <summary>
+    /// Indicates whether or not the fields within the credential pass validation
+    /// </summary>
+    public bool ExtendedValidation
+    {
+      get;
+    }
+
+    /// <summary>
     /// The credential holder's birth year
     /// </summary>
     public string byr

@@ -17,6 +17,10 @@ namespace PassportControl.Cmd
       var validRecords = records.Where(r => r.Valid).Count();
 
       Console.WriteLine(validRecords);
+
+      var extendedValidRecords = records.Where(r => r.ExtendedValidation).Count();
+
+      Console.WriteLine(extendedValidRecords);
     }
   }
 }
