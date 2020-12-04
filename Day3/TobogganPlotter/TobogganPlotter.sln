@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TobogganPlotter.Core", "Tob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TobogganPlotter.Core.Tests", "TobogganPlotter.Core.Tests\TobogganPlotter.Core.Tests.csproj", "{0EE60AD4-B314-4E0D-AC55-028455B8583F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "..\..\Common\Utilities\Utilities.csproj", "{C49102FD-84D6-43C5-92D3-1951A3821E4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "..\..\Common\Common.Utilities\Common.Utilities.csproj", "{C49102FD-84D6-43C5-92D3-1951A3821E4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

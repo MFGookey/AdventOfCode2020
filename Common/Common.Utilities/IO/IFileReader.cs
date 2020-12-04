@@ -1,4 +1,4 @@
-﻿namespace Utilities.IO
+﻿namespace Common.Utilities.IO
 {
   public interface IFileReader
   {
