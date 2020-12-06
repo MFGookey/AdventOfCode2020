@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Utilities.IO;
-using AdventOfCode.Template.Core;
+//using AdventOfCode.Template.Core;
 
 namespace AdventOfCode.Template.Cmd
 {

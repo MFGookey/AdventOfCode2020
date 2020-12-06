@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Utilities", "..\..\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode.Template.Core", "AdventOfCode.Template.Core\AdventOfCode.Template.Core.csproj", "{BA5EDAE7-BA58-47A8-9CFB-3B4D9D6895EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode.Templatee.Core.Tests", "AdventOfCode.Templatee.Core.Tests\AdventOfCode.Templatee.Core.Tests.csproj", "{1C8417B3-BEDA-4D30-B828-E3221EE4345A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode.Template.Core.Tests", "AdventOfCode.Template.Core.Tests\AdventOfCode.Template.Core.Tests.csproj", "{1C8417B3-BEDA-4D30-B828-E3221EE4345A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
