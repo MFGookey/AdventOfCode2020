@@ -9,5 +9,9 @@
     <ProjectReference Include="..\..\..\Common\Common.Utilities\Common.Utilities.csproj" />
     <ProjectReference Include="..\NorthPoleAir.Core\NorthPoleAir.Core.csproj" />
   </ItemGroup>
-
+  <ItemGroup> 
+    <Content Include="..\..\Data\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
+  </ItemGroup>
 </Project>

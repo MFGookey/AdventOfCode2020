@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Utilities.IO;
-using NorthPoleAir;
+using NorthPoleAir.Core;
+using System.Linq;
 
 namespace NorthPoleAir.Cmd
 {
@@ -15,11 +16,11 @@ namespace NorthPoleAir.Cmd
     /// <param name="args">Command line arguments (not used)</param>
     static void Main(string[] args)
     {
-      // I want there to be a better way to do this.
-      var filePath = "../../../../../Data/input";
+      var filePath = "./input";
       var reader = new FileReader();
-      Console.WriteLine(reader.ReadFile(filePath).Length);
-      Console.WriteLine("Hello World!");
+      var plane = new Plane(128, 8);
+      var maxId = reader.ReadFileByLines(filePath).Select(l => new BoardingPass(plane, l).SeatId).Max();
+      Console.WriteLine(maxId);
     }
   }
 }
