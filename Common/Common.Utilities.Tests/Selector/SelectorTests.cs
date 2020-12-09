@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using sut = AdventCalculator.Core.Selector;
+using sut = Common.Utilities.Selector;
 
-namespace AdventCalculator.Core.Tests.Selector
+namespace Common.Utilities.Tests.Selector
 {
   public class SelectorTests
   {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AdventCalculator.Core.Selector
+namespace Common.Utilities.Selector
 {
   /// <summary>
   /// Given a list of integers, select some which satisfy a given property
