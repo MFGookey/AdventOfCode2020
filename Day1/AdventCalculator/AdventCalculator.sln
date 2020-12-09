@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventCalculator.Core.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventCalculator.Core", "AdventCalculator.Core\AdventCalculator.Core.csproj", "{168ED69D-6682-4932-8F98-5947879D66ED}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Utilities", "..\..\Common\Common.Utilities\Common.Utilities.csproj", "{01FFAA96-B982-475B-A11E-6A8B33C0D05B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{168ED69D-6682-4932-8F98-5947879D66ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{168ED69D-6682-4932-8F98-5947879D66ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{168ED69D-6682-4932-8F98-5947879D66ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FFAA96-B982-475B-A11E-6A8B33C0D05B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FFAA96-B982-475B-A11E-6A8B33C0D05B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FFAA96-B982-475B-A11E-6A8B33C0D05B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FFAA96-B982-475B-A11E-6A8B33C0D05B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
