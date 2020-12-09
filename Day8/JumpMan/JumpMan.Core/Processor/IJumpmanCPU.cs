@@ -28,6 +28,14 @@ namespace JumpMan.Core.Processor
     }
 
     /// <summary>
+    /// Gets a flag indicating whether or not the program terminated normally.
+    /// </summary>
+    bool TerminatedNormally
+    {
+      get;
+    }
+
+    /// <summary>
     /// Run the loaded program the IOperations represent until it halts
     /// </summary>
     void RunProgram();
@@ -42,5 +50,11 @@ namespace JumpMan.Core.Processor
     /// Reset the program counter, accumulator, trace, halt, and last operation
     /// </summary>
     void Reset();
+
+    /// <summary>
+    /// Loads a new program into the cpu and resets
+    /// </summary>
+    /// <param name="newProgram">The new program to load</param>
+    void LoadNewProgram(IEnumerable<IOperation> newProgram);
   }
 }

@@ -57,6 +57,13 @@ namespace JumpMan.Core.Processor
       get; private set;
     }
 
+    /// <inheritdoc/>
+    public bool TerminatedNormally
+    {
+      get;
+      private set;
+    }
+
     private Dictionary<OpCode, Action<IOperation>> _supportedOperations;
 
     /// <summary>
@@ -86,26 +93,8 @@ namespace JumpMan.Core.Processor
         }
       };
 
-      // If _program contains any OpCodes not found in _supportedOperations, we have a problem and should bail immediately
-      var unsupportedOpCodes = program
-        .Select((operation) => operation.OpCode)
-        .Distinct()
-        .Except(_supportedOperations.Keys);
-      
-      if(unsupportedOpCodes.Count() > 0)
-      {
-        var message = string.Format(
-          "The Opcodes: \"{0}\" are not supported.",
-          string.Join(
-            "\", \"",
-            unsupportedOpCodes.Select(
-              operation => operation.ToString()
-            )
-          )
-        );
 
-        throw new ArgumentException(message, nameof(program));
-      }
+      ValidateProgram(program);
 
       _program = program.ToList();
 
@@ -149,6 +138,41 @@ namespace JumpMan.Core.Processor
       Halt = false;
       LastOperation = null;
       _trace = new List<ICPUState>();
+      TerminatedNormally = false;
+    }
+
+    /// <inheritdoc/>
+    public void LoadNewProgram(IEnumerable<IOperation> newProgram)
+    {
+      ValidateProgram(newProgram);
+
+      _program = newProgram.ToList();
+
+      Reset();
+    }
+
+    private void ValidateProgram(IEnumerable<IOperation> program)
+    {
+      // If _program contains any OpCodes not found in _supportedOperations, we have a problem and should bail immediately
+      var unsupportedOpCodes = program
+        .Select((operation) => operation.OpCode)
+        .Distinct()
+        .Except(_supportedOperations.Keys);
+
+      if (unsupportedOpCodes.Count() > 0)
+      {
+        var message = string.Format(
+          "The Opcodes: \"{0}\" are not supported.",
+          string.Join(
+            "\", \"",
+            unsupportedOpCodes.Select(
+              operation => operation.ToString()
+            )
+          )
+        );
+
+        throw new ArgumentException(message, nameof(program));
+      }
     }
 
     /// <summary>
@@ -161,7 +185,7 @@ namespace JumpMan.Core.Processor
       {
         return _program[ProgramCounter];
       }
-
+      TerminatedNormally = true;
       return null;
     }
 

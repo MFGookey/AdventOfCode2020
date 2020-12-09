@@ -44,7 +44,8 @@ namespace JumpMan.Core.Tests.Processor
       int expectedAccumulator,
       bool expectedHalt,
       IOperation expectedLastOperation,
-      IEnumerable<ICPUState> expectedTrace
+      IEnumerable<ICPUState> expectedTrace,
+      bool expectedTermination
     )
     {
       var sut = new JumpmanCPU(program);
@@ -58,12 +59,38 @@ namespace JumpMan.Core.Tests.Processor
       Assert.Equal(expectedAccumulator, sut.Accumulator);
       Assert.Equal(expectedHalt, sut.Halt);
       Assert.Equal(expectedLastOperation, sut.LastOperation);
+      Assert.Equal(expectedTermination, sut.TerminatedNormally);
       Assert.Equal(expectedTrace.Count(), sut.Trace.Count());
 
       for (var i = 0; i < expectedTrace.Count(); i++)
       {
         Assert.Equal(expectedTrace.Skip(i).First(), sut.Trace.Skip(i).First());
       }
+    }
+
+    [Fact]
+    public void LoadNewProgram_GivenInvalidProgram_ThrowsException()
+    {
+      var sut = new JumpmanCPU(new IOperation[] { });
+
+      var program = new IOperation[]
+      {
+        OpCodeUtility.MockOperation(OpCode.debug, 0)
+      };
+
+      var exception = Assert.Throws<ArgumentException>(() => sut.LoadNewProgram(program));
+      Assert.StartsWith("The Opcodes: \"debug\" are not supported.", exception.Message);
+    }
+
+    [Theory]
+    [MemberData(nameof(ValidPrograms))]
+    public void LoadNewProgram_GivenValidProgram_SetsProgramAsExpected(IEnumerable<IOperation> program)
+    {
+      var sut = new JumpmanCPU(new IOperation[] { });
+
+      sut.LoadNewProgram(program);
+
+      Assert.Equal(program, sut.Program);
     }
 
     public static IEnumerable<object[]> ValidPrograms
@@ -129,7 +156,8 @@ namespace JumpMan.Core.Tests.Processor
           {
             CPUStateUtility.MockCPUState(0, 0, false, null),
             CPUStateUtility.MockCPUState(0, 0, true, null)
-          }
+          },
+          true
         };
 
         yield return new object[]
@@ -147,7 +175,8 @@ namespace JumpMan.Core.Tests.Processor
           {
             CPUStateUtility.MockCPUState(0, 0, false, null),
             CPUStateUtility.MockCPUState(1, 0, true, OpCodeUtility.MockOperation(OpCode.nop, 0))
-          }
+          },
+          false
         };
 
         yield return new object[]
@@ -165,7 +194,8 @@ namespace JumpMan.Core.Tests.Processor
           {
             CPUStateUtility.MockCPUState(0, 0, false, null),
             CPUStateUtility.MockCPUState(1, 42, true, OpCodeUtility.MockOperation(OpCode.acc, 42))
-          }
+          },
+          false
         };
 
         yield return new object[]
@@ -183,7 +213,8 @@ namespace JumpMan.Core.Tests.Processor
           {
             CPUStateUtility.MockCPUState(0, 0, false, null),
             CPUStateUtility.MockCPUState(-120, 0, true, OpCodeUtility.MockOperation(OpCode.jmp, -120))
-          }
+          },
+          false
         };
 
         yield return new object[]
@@ -202,7 +233,8 @@ namespace JumpMan.Core.Tests.Processor
             CPUStateUtility.MockCPUState(0, 0, false, null),
             CPUStateUtility.MockCPUState(-120, 0, false, OpCodeUtility.MockOperation(OpCode.jmp, -120)),
             CPUStateUtility.MockCPUState(-120, 0, true, null)
-          }
+          },
+          true
         };
 
         yield return new object[]
@@ -241,7 +273,8 @@ namespace JumpMan.Core.Tests.Processor
             CPUStateUtility.MockCPUState(3, 2, false, OpCode.jmp, -4),
             CPUStateUtility.MockCPUState(4, 5, false, OpCode.acc, 3),
             CPUStateUtility.MockCPUState(1, 5, true, OpCode.jmp, -3)
-          }
+          },
+          false
         };
       }
     }

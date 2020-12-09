@@ -33,11 +33,7 @@ namespace JumpMan.Core.Tests.Processor
 
             return programCounter == other.ProgramCounter
               && accumulator == other.Accumulator
-              && halt == other.Halt
-              /*&& (
-                lastOperation == null && other.LastOperation == null
-                || lastOperation.Equals(other.LastOperation)
-              )*/;
+              && halt == other.Halt;
           }
         );
 
