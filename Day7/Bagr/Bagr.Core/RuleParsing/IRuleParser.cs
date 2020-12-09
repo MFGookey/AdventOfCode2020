@@ -38,5 +38,13 @@ namespace Bagr.Core.RuleParsing
     /// <param name="bagToFind">The bag to find</param>
     /// <returns>A list of distinct bag colors that could contain the bagToFind at least minimum levels deep</returns>
     IEnumerable<string> FindBagColorsContainingBag(IEnumerable<StringBag> rules, string bagToFind);
+
+    /// <summary>
+    /// Given a list of bags and their relationship to other bags, and a bagColor to start with, find all of the bags contained within
+    /// </summary>
+    /// <param name="rules">The rules to use in finding the bag</param>
+    /// <param name="bagToFind">The starting bag to find</param>
+    /// <returns>The list of bags contained by bagToFind</returns>
+    IEnumerable<StringBag> FindContents(IEnumerable<StringBag> rules, string bagToFind);
   }
 }

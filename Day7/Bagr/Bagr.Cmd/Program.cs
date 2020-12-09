@@ -33,6 +33,11 @@ namespace Bagr.Cmd
       var bagColors = parser.FindBagColorsContainingBag(parsedRules, "shiny gold");
 
       Console.WriteLine(bagColors.Count());
+
+      // Subtract 1 because we only care about what's in our bag
+      var sumOfContents = parser.FindSumOfContents(parsedRules, "shiny gold") - 1;
+
+      Console.WriteLine(sumOfContents);
     }
   }
 }

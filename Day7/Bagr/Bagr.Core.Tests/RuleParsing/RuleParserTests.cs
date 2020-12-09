@@ -69,7 +69,7 @@ namespace Bagr.Core.Tests.RuleParsing
 
     [Theory]
     [MemberData(nameof(FindBags))]
-    public void FindBagsContainingBag(
+    public void FindBagsContainingBag_GivenValidCriteria_ReturnsExpectedResults(
       IEnumerable<StringBag> rules,
       string bagToFind,
       IEnumerable<StringBag> expectedResults
@@ -90,7 +90,7 @@ namespace Bagr.Core.Tests.RuleParsing
 
     [Theory]
     [MemberData(nameof(FindBagColors))]
-    public void FindBagsColorsContainingBag(
+    public void FindBagsColorsContainingBag_GivenValidCriteria_ReturnsExpectedResults(
       IEnumerable<StringBag> rules,
       string bagToFind,
       IEnumerable<string> expectedResults
@@ -105,6 +105,43 @@ namespace Bagr.Core.Tests.RuleParsing
         results
           .OrderBy(bag => bag)
       );
+    }
+
+    [Theory]
+    [MemberData(nameof(FindBagContents))]
+    public void FindContents_GivenValidCriteria_ReturnsExpectedResults(
+      string bagToFind,
+      IEnumerable<StringBag> rules,
+      IEnumerable<StringBag> expectedResults
+    )
+    {
+      var sut = new RuleParser();
+
+      var results = sut.FindContents(rules, bagToFind);
+
+      Assert.Equal(
+        expectedResults
+          .OrderBy(bag => bag.BagColor)
+          .ThenBy(bag => bag.ContainedBag),
+        results
+          .OrderBy(bag => bag.BagColor)
+          .ThenBy(bag => bag.ContainedBag)
+      );
+    }
+
+    [Theory]
+    [MemberData(nameof(BagQuantities))]
+    public void FindSumOfContents_GivenValidCriteria_ReturnsExpectedResults(
+      string bagToFind,
+      IEnumerable<StringBag> rules,
+      int expectedResult
+    )
+    {
+      var sut = new RuleParser();
+
+      var results = sut.FindSumOfContents(rules, bagToFind);
+
+      Assert.Equal(expectedResult, results);
     }
 
     public static IEnumerable<object[]> BagRules
@@ -1176,6 +1213,364 @@ namespace Bagr.Core.Tests.RuleParsing
             "dark orange",
             "light red"
           }
+        };
+      }
+    }
+
+    public static IEnumerable<object[]> FindBagContents
+    {
+      get
+      {
+        yield return new object[]{
+          "dark violet",
+          new StringBag[]
+          {
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          },
+
+          new StringBag[]{ }
+        };
+
+        yield return new object[]{
+          "dark blue",
+          new StringBag[]
+          {
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          },
+
+          new StringBag[]{
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          }
+        };
+
+        yield return new object[]{
+          "shiny gold",
+          new StringBag[]
+          {
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          },
+
+          new StringBag[]{
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          }
+        };
+      }
+    }
+
+    public static IEnumerable<object[]> BagQuantities
+    {
+      get
+      {
+        yield return new object[]{
+          "shiny gold",
+          new StringBag[]
+          {
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          },
+          127
+        };
+
+        yield return new object[]{
+          "dark blue",
+          new StringBag[]
+          {
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          },
+          3
+        };
+
+        yield return new object[]{
+          "dark green",
+          new StringBag[]
+          {
+            new StringBag
+            {
+              BagColor = "shiny gold",
+              ContainedBag = "dark red",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark red",
+              ContainedBag = "dark orange",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark orange",
+              ContainedBag = "dark yellow",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark yellow",
+              ContainedBag = "dark green",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark green",
+              ContainedBag = "dark blue",
+              ContainedQuantity = 2
+            },
+
+            new StringBag
+            {
+              BagColor = "dark blue",
+              ContainedBag = "dark violet",
+              ContainedQuantity = 2
+            }
+          },
+          7
         };
       }
     }

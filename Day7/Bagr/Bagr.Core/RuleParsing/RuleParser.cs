@@ -61,5 +61,40 @@ namespace Bagr.Core.RuleParsing
         .Select(bag => bag.BagColor)
         .Distinct();
     }
+
+    /// <inheritdoc/>
+    public IEnumerable<StringBag> FindContents(IEnumerable<StringBag> rules, string bagToFind)
+    {
+      // Find the rules for the contextual bag
+      var rulesForCurrentBag = rules.Where(bag => bag.BagColor.Equals(bagToFind));
+
+      // Find the contents of the bags contained in the rules
+      var containedBags = rulesForCurrentBag
+        .SelectMany(
+          bag => FindContents(rules, bag.ContainedBag)
+        );
+
+      return rulesForCurrentBag.Union(containedBags).Distinct();
+    }
+
+    /// <inheritdoc/>
+    public int FindSumOfContents(
+      IEnumerable<StringBag> rules,
+      string bagToFind
+    )
+    {
+      // Find the bags contained by the current bag to find
+      // Call FindSumOfContents for all of those bags then multiply by the ContainedQuantity in the current bag
+      // Then add 1 to the sum of all of those.
+
+      var rulesForCurrentBag = rules.Where(bag => bag.BagColor.Equals(bagToFind));
+
+      var containedBags = rulesForCurrentBag
+        .Select(
+          bag => FindSumOfContents(rules, bag.ContainedBag) * bag.ContainedQuantity
+        );
+
+      return containedBags.Sum() + 1;
+    }
   }
 }
