@@ -50,15 +50,12 @@ namespace ChristmasCracker.Core
           k => new
           {
             needle = message.Skip(k + preambleLength).First(),
-            haystack = message.Skip(k).Take(preambleLength),
-            terms = 2
-          }
-        )
-        .Select(
-          run => new
-          {
-            run.needle,
-            foundSum = _selector.SumFinder(run.haystack, run.needle, run.terms)
+            foundSum = _selector
+              .SumFinder(
+                message.Skip(k).Take(preambleLength),
+                message.Skip(k + preambleLength).First(),
+                2
+              )
           }
         )
         .Where(result => result.foundSum == null)
