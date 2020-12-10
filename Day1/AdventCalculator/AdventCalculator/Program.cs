@@ -26,7 +26,7 @@ namespace AdventCalculator
         throw new FormatException("Input must be all integers!");
       }
 
-      var inputs = inputStrings.Select(s => int.Parse(s)).ToList();
+      var inputs = inputStrings.Select(s => int.Parse(s));
 
       ISelector selector = new Selector();
       IMultiplier multiplier = new Multiplier();
