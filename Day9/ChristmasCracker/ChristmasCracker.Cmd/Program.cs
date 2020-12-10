@@ -31,7 +31,15 @@ namespace ChristmasCracker.Cmd
 
       var results = cracker.FindUnsummableNumbers(preambleLength, 2, inputs);
 
-      Console.WriteLine(results.First());
+      var unSummableNumber = results.First();
+
+      Console.WriteLine(unSummableNumber);
+
+      var attackResults = cracker.AttackUnsummableNumber(unSummableNumber, inputs).OrderBy(s => s);
+      
+      var key = attackResults.First() + attackResults.Last();
+
+      Console.WriteLine(key);
     }
   }
 }

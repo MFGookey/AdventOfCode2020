@@ -64,5 +64,21 @@ namespace ChristmasCracker.Core
         .Where(result => result.foundSum == null)
         .Select(result => result.needle);
     }
+
+
+    /// <inheritdoc/>
+    public IEnumerable<long> AttackUnsummableNumber(long unSummableNumber, IEnumerable<long> message)
+    {
+      return Enumerable.Range(2, message.Count() - 1)
+        .SelectMany(
+          k => Enumerable
+            .Range(0, message.Count() - k + 1)
+            .Select(
+              j => message.Skip(j).Take(k)
+            )
+            .Where(sequence => sequence.Sum() == unSummableNumber)
+        )
+        .First();
+    }
   }
 }

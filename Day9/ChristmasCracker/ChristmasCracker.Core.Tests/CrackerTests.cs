@@ -38,6 +38,49 @@ namespace ChristmasCracker.Core.Tests
       Assert.Equal(expectedResults, result);
     }
 
+    [Fact]
+    public void AttackUnsummableNumber_GivenValidMessageAndNumber_ReturnsExpectedResults()
+    {
+      var message = new long[]{
+        35,
+        20,
+        15,
+        25,
+        47,
+        40,
+        62,
+        55,
+        65,
+        95,
+        102,
+        117,
+        150,
+        182,
+        127,
+        219,
+        299,
+        277,
+        309,
+        576
+      };
+
+      var unSummableNumber = 127L;
+
+      var expectedResults = new long[]
+      {
+        15,
+        25,
+        47,
+        40
+      };
+
+      var sut = new Cracker();
+
+      var result = sut.AttackUnsummableNumber(unSummableNumber, message);
+
+      Assert.Equal(expectedResults, result);
+    }
+
     public static IEnumerable<object[]> XMASMessages
     {
       get
