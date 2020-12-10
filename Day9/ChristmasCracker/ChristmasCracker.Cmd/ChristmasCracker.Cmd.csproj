@@ -7,11 +7,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Common.Utilities\Common.Utilities.csproj" />
-    <ProjectReference Include="..\AdventCalculator.Core\AdventCalculator.Core.csproj" />
+    <ProjectReference Include="..\ChristmasCracker.Core\ChristmasCracker.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\Data\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+  <ItemGroup> 
+    <Content Include="..\..\Data\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
   </ItemGroup>
 </Project>

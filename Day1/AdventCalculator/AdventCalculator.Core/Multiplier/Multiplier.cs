@@ -7,11 +7,11 @@ namespace AdventCalculator.Core.Multiplier
   public class Multiplier : IMultiplier
   {
     /// <inheritdoc/>
-    public int? Multiply(IList<int> multiplicands)
+    public int? Multiply(IEnumerable<int> multiplicands)
     {
       int? result = null;
       
-      if (multiplicands is null == false && multiplicands.Count >= 2)
+      if (multiplicands is null == false && multiplicands.Count() >= 2)
       {
         result = multiplicands.First() * multiplicands.Skip(1).First();
 
