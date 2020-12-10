@@ -1,6 +1,8 @@
 ﻿using System;
 using Common.Utilities.IO;
-//using AdaptrStackr.Core;
+using AdaptrStackr.Core;
+using AdaptrStackr.Core.Device;
+using System.Linq;
 
 namespace AdaptrStackr.Cmd
 {
@@ -17,8 +19,17 @@ namespace AdaptrStackr.Cmd
     {
       var filePath = "./input";
       var reader = new FileReader();
-      Console.WriteLine(reader.ReadFile(filePath).Length);
-      Console.WriteLine("Hello World!");
+      var inputs = reader.ReadFileByLines(filePath);
+
+      if (inputs.Where(input => int.TryParse(input, out var _) == false).Any())
+      {
+        throw new FormatException("Could not parse the input data.");
+      }
+
+      var adapters = inputs.Select(input => new Adapter(int.Parse(input)));
+      var stacker = new DeviceStacker();
+      var result = stacker.CreateStack(adapters);
+      Console.WriteLine(result);
     }
   }
 }
