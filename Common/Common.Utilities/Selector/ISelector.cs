@@ -14,6 +14,6 @@ namespace Common.Utilities.Selector
     /// <param name="needle">The target value to which the returned list must sum</param>
     /// <param name="totalTerms">The number of ints that ought to be in the final listing</param>
     /// <returns>An enumerable of integers that sum to a target value</returns>
-    IList<int> SumFinder(IList<int> haystack, int needle, int totalTerms);
+    IEnumerable<int> SumFinder(IEnumerable<int> haystack, int needle, int totalTerms);
   }
 }

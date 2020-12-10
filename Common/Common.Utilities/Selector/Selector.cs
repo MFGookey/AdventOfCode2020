@@ -7,33 +7,34 @@ namespace Common.Utilities.Selector
   public class Selector : ISelector
   {
     /// <inheritdoc/>
-    public IList<int> SumFinder(IList<int> haystack, int needle, int totalTerms)
+    public IEnumerable<int> SumFinder(IEnumerable<int> haystack, int needle, int totalTerms)
     {
       // Given a haystack, and a needle we can recursively work to find the sum using slices of the input haystack.
       if (totalTerms > 0 && (haystack is null) == false)
       {
-        IList<int> result = new List<int>();
+        IEnumerable<int> result = new List<int>();
         // Iterate over the haystack once.  Let i be the current index in haystack
-        for (var i = 0; i < haystack.Count; i++)
+        for (var i = 0; i < haystack.Count(); i++)
         {
           // If totalTerms == 1 && the current index in haystack == needle, we're done here!  Return a collection containing the current selected item as a collection
           if (totalTerms == 1)
           {
-            if (haystack[i] == needle)
+            if (haystack.Skip(i).First() == needle)
             {
-              result.Add(haystack[i]);
+              result = result.Append(haystack.Skip(i).First());
               return result;
             }
           }
           else
           {
             // If totalTerms > 1: call SumFinder(haystack[i+1..end], needle-haystack[i], totalTerms-1);
-            result = SumFinder(haystack.Skip(i).ToList(), needle - haystack[i], totalTerms - 1);
+            // Actually skipping i+1 because haystack is zero indexed
+            result = SumFinder(haystack.Skip(i + 1), needle - haystack.Skip(i).First(), totalTerms - 1);
 
             // If that recursive call returns null, move on to the next i, else: append haystack[i] to the returned list and return that list.
             if (result is null == false)
             {
-              result.Add(haystack[i]);
+              result = result.Append(haystack.Skip(i).First());
               return result;
             }
           }
