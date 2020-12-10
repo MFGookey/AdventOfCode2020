@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Utilities.IO;
-//using ChristmasCracker.Core;
+using ChristmasCracker.Core;
+using System.Linq;
 
 namespace ChristmasCracker.Cmd
 {
@@ -17,8 +18,20 @@ namespace ChristmasCracker.Cmd
     {
       var filePath = "./input";
       var reader = new FileReader();
-      Console.WriteLine(reader.ReadFile(filePath).Length);
-      Console.WriteLine("Hello World!");
+      var inputStrings = reader.ReadFileByLines(filePath);
+
+      if (inputStrings.Where(input => long.TryParse(input, out var _) == false).Any())
+      {
+        throw new FormatException("Input file must be only integers");
+      }
+
+      var inputs = inputStrings.Select(input => long.Parse(input));
+      var preambleLength = 25;
+      var cracker = new Cracker();
+
+      var results = cracker.FindUnsummableNumbers(preambleLength, 2, inputs);
+
+      Console.WriteLine(results.First());
     }
   }
 }
