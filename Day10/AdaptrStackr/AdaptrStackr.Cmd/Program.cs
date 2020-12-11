@@ -30,6 +30,12 @@ namespace AdaptrStackr.Cmd
       var stacker = new DeviceStacker();
       var result = stacker.CreateStack(adapters);
       Console.WriteLine(result);
+
+      var toCharge = new ChargeableDevice(adapters);
+
+      var permutations = stacker.Permute(adapters, toCharge);
+
+      Console.WriteLine(permutations);
     }
   }
 }

@@ -608,6 +608,94 @@ namespace AdaptrStackr.Core.Tests.Device
             {int.MaxValue, false }
           }
         };
+
+        yield return new object[]
+        {
+          new ISocket[] {
+            MockSocket(28),
+            MockSocket(33),
+            MockSocket(18),
+            MockSocket(42),
+            MockSocket(31),
+            MockSocket(14),
+            MockSocket(46),
+            MockSocket(20),
+            MockSocket(48),
+            MockSocket(47),
+            MockSocket(24),
+            MockSocket(23),
+            MockSocket(49),
+            MockSocket(45),
+            MockSocket(19),
+            MockSocket(38),
+            MockSocket(39),
+            MockSocket(11),
+            MockSocket(1),
+            MockSocket(32),
+            MockSocket(25),
+            MockSocket(35),
+            MockSocket(8),
+            MockSocket(17),
+            MockSocket(7),
+            MockSocket(9),
+            MockSocket(4),
+            MockSocket(2),
+            MockSocket(34),
+            MockSocket(10),
+            MockSocket(3)
+          },
+          49,
+          51,
+          new Dictionary<int, bool>
+          {
+            {int.MinValue, false },
+            {46, false },
+            {47, false },
+            {48, false },
+            {49, true },
+            {50, true },
+            {51, true },
+            {52, false },
+            {53, false },
+            {54, false },
+            {55, false },
+            {int.MaxValue, false }
+          }
+        };
+
+        yield return new object[]
+        {
+          new ISocket[] {
+            MockSocket(16),
+            MockSocket(10),
+            MockSocket(15),
+            MockSocket(5),
+            MockSocket(1),
+            MockSocket(11),
+            MockSocket(7),
+            MockSocket(19),
+            MockSocket(6),
+            MockSocket(12),
+            MockSocket(4)
+          },
+          19,
+          21,
+          new Dictionary<int, bool>
+          {
+            {int.MinValue, false },
+            {16, false },
+            {17, false },
+            {18, false },
+            {19, true },
+            {20, true },
+            {21, true },
+            {22, false },
+            {23, false },
+            {24, false },
+            {25, false },
+            {int.MaxValue, false }
+          }
+        };
       }
     }
 
