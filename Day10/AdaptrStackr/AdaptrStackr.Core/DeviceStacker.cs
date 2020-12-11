@@ -57,5 +57,57 @@ namespace AdaptrStackr.Core
       var ones = stack.Where(pair => pair.Plug.HighInput == pair.Socket.Output).Count();
       return threes * ones;
     }
+
+    /// <inheritdoc/>
+    public long Permute(IEnumerable<ISocket> toPermute, ChargeableDevice toCharge)
+    {
+      // combine our lists.  Did this to ensure only one chargeable device at the end of all of this.
+      var devices = toPermute.Select(adapter => adapter as IDevice).Append(toCharge);
+      var chargingPorts = devices.Where(device => device is Socket).Count();
+
+      if (chargingPorts > 1)
+      {
+        throw new ArgumentException("toPermute may have at most one Socket", nameof(toPermute));
+      }
+      
+      if (chargingPorts == 0)
+      {
+        // Need to create our own, I guess.
+        var chargingPort = new Socket();
+        devices = devices.Append(chargingPort);
+      }
+
+      var socketsWithPlugs = devices
+        .Where(device => device is ISocket)
+        .Select(device => (ISocket)device)
+        .OrderBy(device => device.Output)
+        .Select(
+          socket => new
+          {
+            socketVoltage = socket.Output,
+            plugs = devices
+              .Where(device => device is IChargeableDevice)
+              .Select(device => ((IChargeableDevice)device))
+              .Where(device => device.CanAttach(socket))
+              .OrderByDescending(device => device.LowInput)
+          }
+        );
+
+      var waysToGetThere = new Dictionary<int, long>();
+      // creating a running list of how many ways it takes to get to the goal LowInput from each previous spot
+      waysToGetThere.Add(toCharge.HighInput + 1, 1);
+
+      foreach (var socketPlug in socketsWithPlugs.OrderByDescending(sp => sp.socketVoltage))
+      {
+        long waysThereFromHere = 0;
+        foreach (var plug in socketPlug.plugs)
+        {
+          waysThereFromHere += waysToGetThere[plug.HighInput + 1]; // fake out the output
+        }
+        waysToGetThere.Add(socketPlug.socketVoltage, waysThereFromHere);
+      }
+
+      return waysToGetThere.Values.Max();
+    }
   }
 }
