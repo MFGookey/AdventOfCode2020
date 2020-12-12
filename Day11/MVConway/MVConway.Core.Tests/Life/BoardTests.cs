@@ -23,7 +23,7 @@ namespace MVConway.Core.Tests.Life
 
       var interpreter = new Func<char, CellState>((c) => CellState.Empty);
 
-      Assert.Throws<FormatException>(() => new Board(data, criteria, criteria, interpreter));
+      Assert.Throws<FormatException>(() => new Board(data, criteria, criteria, interpreter, NeighborSelectionRule.SimpleConway));
     }
 
     [Fact]
@@ -35,7 +35,7 @@ namespace MVConway.Core.Tests.Life
 
       var interpreter = new Func<char, CellState>((c) => CellState.Empty);
 
-      Assert.Throws<ArgumentNullException>(() => new Board(data, null, criteria, interpreter));
+      Assert.Throws<ArgumentNullException>(() => new Board(data, null, criteria, interpreter, NeighborSelectionRule.SimpleConway));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ namespace MVConway.Core.Tests.Life
 
       var interpreter = new Func<char, CellState>((c) => CellState.Empty);
 
-      Assert.Throws<ArgumentNullException>(() => new Board(data, criteria, null, interpreter));
+      Assert.Throws<ArgumentNullException>(() => new Board(data, criteria, null, interpreter, NeighborSelectionRule.SimpleConway));
     }
 
     [Fact]
@@ -86,7 +86,7 @@ namespace MVConway.Core.Tests.Life
       var expectedStringBoard =
         "L.LL.LL.LL\nLLLLLLL.LL\nL.L.L..L..\nLLLL.LL.LL\nL.LL.LL.LL\nL.LLLLL.LL\n..L.L.....\nLLLLLLLLLL\nL.LLLLLL.L\nL.LLLLL.LL";
 
-      var sut = new Board(data, criteria, criteria, interpreter);
+      var sut = new Board(data, criteria, criteria, interpreter, NeighborSelectionRule.SimpleConway);
       Assert.Equal(expectedStringBoard, sut.ToString());
     }
 
@@ -158,7 +158,7 @@ namespace MVConway.Core.Tests.Life
         }
       };
 
-      var sut = new Board(data, survivalCriteria, birthCriteria, interpreter);
+      var sut = new Board(data, survivalCriteria, birthCriteria, interpreter, NeighborSelectionRule.SimpleConway);
 
 
       Assert.Equal(expectedStringBoard, sut.ToString());
@@ -211,7 +211,7 @@ namespace MVConway.Core.Tests.Life
         "L.LL.LL.LL\nLLLLLLL.LL\nL.L.L..L..\nLLLL.LL.LL\nL.LL.LL.LL\nL.LLLLL.LL\n..L.L.....\nLLLLLLLLLL\nL.LLLLLL.L\nL.LLLLL.LL";
       var finalExpectedBoard =
         "#.#L.L#.##\n#LLL#LL.L#\nL.#.L..#..\n#L##.##.L#\n#.#L.LL.LL\n#.#L#L#.##\n..L.L.....\n#L#L##L#L#\n#.LLLLLL.L\n#.#L#L#.##";
-      var sut = new Board(data, survivalCriteria, birthCriteria, interpreter);
+      var sut = new Board(data, survivalCriteria, birthCriteria, interpreter, NeighborSelectionRule.SimpleConway);
 
 
       Assert.Equal(expectedStringBoard, sut.ToString());

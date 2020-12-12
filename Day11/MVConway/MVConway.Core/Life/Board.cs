@@ -39,11 +39,13 @@ namespace MVConway.Core.Life
     /// <param name="survivalCriteria">A list of the number of living neighbors a living cell must have in order to persist from one step to the next</param>
     /// <param name="birthCriteria">A list of the number of living neighbors an empty cell must have in order to become alive</param>
     /// <param name="boardInterpreter">A delegate to map a character to a CellState</param>
+    /// <param name="neighborRule">Determine the rules by which neighbors of cells are chosen</param>
     public Board(
       string[] boardData,
       int[] survivalCriteria,
       int[] birthCriteria,
-      Func<char, CellState> boardInterpreter
+      Func<char, CellState> boardInterpreter,
+      NeighborSelectionRule neighborRule
     )
     {
       _survivalCriteria = survivalCriteria ?? throw new ArgumentNullException(nameof(survivalCriteria));
@@ -56,28 +58,33 @@ namespace MVConway.Core.Life
       }
 
       Cells = Parse(boardData, boardInterpreter);
-
-      AssignNeighbors();
+      switch (neighborRule)
+      {
+        case NeighborSelectionRule.SimpleConway:
+          AssignNeighborGroups(SimpleConwayNeighborList);
+          break;
+        default:
+          throw new Exception("Should not get here");
+      }
+      
     }
 
     /// <summary>
     /// Given a list of neighbors and a current cell state, determine the next state the cell will have
     /// </summary>
-    /// <param name="neighbors"></param>
-    /// <param name="currentState"></param>
+    /// <param name="neighborGroup">Group of neighbors to be evaluated for whether or not to live or die</param>
+    /// <param name="currentState">The cell's current state</param>
     /// <returns>The next CellState</returns>
-    private CellState CalculateNextCellState(IEnumerable<ICell> neighbors, CellState currentState)
+    private CellState CalculateNextCellState(IEnumerable<ICell> neighborGroup, CellState currentState)
     {
       if (currentState == CellState.Unavailable)
       {
         return CellState.Unavailable;
       }
 
-      // Get a count of the neighbors who are not empty.
+      // Get a count of the neighbors that are Alive
       // For the purposes of survival, we treat Unavailable cells as empty
-      var livingNeighbors = neighbors.Count(
-        cell => cell.CurrentState == CellState.Alive
-      );
+      var livingNeighbors = neighborGroup.Count(n => n.CurrentState == CellState.Alive);
 
       if (currentState == CellState.Alive)
       {
@@ -183,43 +190,40 @@ namespace MVConway.Core.Life
         .ToList();
     }
 
-    private void AssignNeighbors()
+    /// <summary>
+    /// To use as a Func to generate and assign immediate neighbors for a given cell.
+    /// </summary>
+    /// <returns>An IEnumerable of tuples holding an ICell and a collection of ICells representing the cell's neighbors</returns>
+    private IEnumerable<Tuple<ICell,IReadOnlyCollection<ICell>>> SimpleConwayNeighborList()
     {
-      // every cell has up to eight neighbors
-      // except for the ones around the outside edge
-      // but we don't care about simulating neighbors outside the board.  They always need to count as empty anyway.
-
-      // here we go.
-      // For every row
-      var cellNeighborMaps = Cells.SelectMany((cellRow, yIndex) =>
+      return Cells.SelectMany((cellRow, yIndex) =>
         // For every cell within that row
-        cellRow.Select((cell, xIndex) => new
-          {
-            // select that cell
-            cell,
-            neighbors =
-              // calculate the neighbors based of the current cell's indices
-              // neighbors are within 1 of the cell on both the x and y axes
-              // except for when we are off the edge of the board
-              // or when the ranges align such that we are looking at ourselves
-              // Ignore both of those cases for each pair of calculated points.
+        cellRow.Select((cell, xIndex) => {
+          var neighbors =
+            // calculate the neighbors based of the current cell's indices
+            // neighbors are within 1 of the cell on both the x and y axes
+            // except for when we are off the edge of the board
+            // or when the ranges align such that we are looking at ourselves
+            // Ignore both of those cases for each pair of calculated points.
 
-              // Create a range of x values from the current x index - 1 that is 3 long (x-1, x, x+1)
-              (IReadOnlyCollection<ICell>)Enumerable.Range(xIndex - 1, 3).SelectMany(
+            // Create a range of x values from the current x index - 1 that is 3 long (x-1, x, x+1)
+            Enumerable.Range(xIndex - 1, 3)
+              .SelectMany(
                 rangeX =>
                 {
-                  // Create a range of y values from the current y index - 1 that is 3 long (y-1, y, y+1)
-                  return Enumerable.Range(yIndex - 1, 3)
+                    // Create a range of y values from the current y index - 1 that is 3 long (y-1, y, y+1)
+                    return Enumerable.Range(yIndex - 1, 3)
                     .Select(
                       rangeY => new
                       {
-                        // Create an x, y pair using the ranges
-                        x = rangeX,
+                          // Create an x, y pair using the ranges
+                          x = rangeX,
                         y = rangeY
                       }
                     );
                 }
-              ).Where(
+              )
+              .Where(
                 resultingPoint =>
                   //the candidate neighbor point must have an x between 0 and the row length -1
                   resultingPoint.x >= 0 &&
@@ -232,14 +236,27 @@ namespace MVConway.Core.Life
                   // and the candidate neighbor point cannot reference the point for which we are selecting neighbors
                   (resultingPoint.x == xIndex && resultingPoint.y == yIndex) == false
               )
-                //for each of those points, select the cell at the point's coordinates
+              //for each of those points, select the cell at the point's coordinates
               .Select(coordinates => Cells[coordinates.y][coordinates.x])
-              
-                //turn this into a readonly list of ICells
-              .ToList()
-          }
+
+              //turn this into a readonly list of ICells
+              .ToList();
+
+          return new Tuple<ICell, IReadOnlyCollection<ICell>>(cell, neighbors);
+        }
         )
       );
+    }
+
+    private void AssignNeighborGroups(Func<IEnumerable<Tuple<ICell, IReadOnlyCollection<ICell>>>> neighborSelector)
+    {
+      // every cell has up to eight neighbors
+      // except for the ones around the outside edge
+      // but we don't care about simulating neighbors outside the board.  They always need to count as empty anyway.
+
+      // here we go.
+      // For every row
+      var cellNeighborMaps = neighborSelector();
 
       foreach (var cellNeighborMap in cellNeighborMaps)
       {

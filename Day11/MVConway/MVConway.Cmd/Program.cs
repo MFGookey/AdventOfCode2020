@@ -43,7 +43,7 @@ namespace MVConway.Cmd
       var birthCriteria = new int[] { 0 };
       var survivalCriteria = new int[] { 0, 1, 2, 3 };
 
-      var gameOfLife = new Board(board, survivalCriteria, birthCriteria, interpreter);
+      var gameOfLife = new Board(board, survivalCriteria, birthCriteria, interpreter, NeighborSelectionRule.SimpleConway);
 
       gameOfLife.StepWhileChange(new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token);
 
