@@ -63,6 +63,9 @@ namespace MVConway.Core.Life
         case NeighborSelectionRule.SimpleConway:
           AssignNeighborGroups(SimpleConwayNeighborList);
           break;
+        case NeighborSelectionRule.QueensMove:
+          AssignNeighborGroups(QueensMoveNeighborList);
+          break;
         default:
           throw new Exception("Should not get here");
       }
@@ -241,6 +244,102 @@ namespace MVConway.Core.Life
 
               //turn this into a readonly list of ICells
               .ToList();
+
+          return new Tuple<ICell, IReadOnlyCollection<ICell>>(cell, neighbors);
+        }
+        )
+      );
+    }
+
+    /// <summary>
+    /// To use as a Func to generate and assign neighbors.  If a chess queen can move to a cell, consider it a neighbor.
+    /// </summary>
+    /// <returns>An IEnumerable of tuples holding an ICell and a collection of collections of ICells representing the cell's neighbors</returns>
+    private IEnumerable<Tuple<ICell, IReadOnlyCollection<ICell>>> QueensMoveNeighborList()
+    {
+      return Cells.SelectMany((cellRow, yIndex) =>
+        // For every cell within that row
+        cellRow.Select((cell, xIndex) => {
+          var neighbors =
+            // calculate the neighbors based of the current cell's indices
+            // neighbors are any cell a chess queen could move to from the current cell
+            // except for when we are off the edge of the board
+            // or when the ranges align such that we are looking at ourselves
+            // Ignore both of those cases for each pair of calculated points.
+
+            // Create a range of x values from 0 to Cells[0].Length
+            Enumerable.Range(0, Cells.First().Count)
+              .SelectMany(
+                rangeX =>
+                {
+                  // Create a range of y values from from 0 to Cells[0].Length
+                  return Enumerable.Range(0, Cells.Count)
+                    .Select(
+                      rangeY => new
+                      {
+                        // Create an x, y pair using the ranges
+                        x = rangeX,
+                        y = rangeY
+                      }
+                    );
+                }
+              )
+              .Where(
+                resultingPoint =>
+                  /*//the candidate neighbor point must have an x between 0 and the row length -1
+                  resultingPoint.x >= 0 &&
+                  resultingPoint.x < Cells.First().Count &&
+
+                  //the point must have a y between 0 and the enumerable length -1
+                  resultingPoint.y >= 0 &&
+                  resultingPoint.y < Cells.Count &&*/
+
+                  // and the candidate neighbor point cannot reference the point for which we are selecting neighbors
+                  (resultingPoint.x == xIndex && resultingPoint.y == yIndex) == false && (
+                    resultingPoint.y == yIndex || // same column
+                    resultingPoint.x == xIndex || // same row
+                    resultingPoint.x - xIndex == resultingPoint.y - yIndex ||
+                    resultingPoint.x - xIndex == yIndex - resultingPoint.y
+                  )
+              )
+              .GroupBy(
+                // group the points so that we can hve each group be an enumerable of cells.
+                point =>
+                {
+                  if (point.x == xIndex && point.y <= yIndex)
+                    return 1; // column above this point
+                  if (point.x == xIndex && point.y > yIndex)
+                    return 2; // column below this point
+                  if (point.x <= xIndex && point.y == yIndex)
+                    return 3; // row left of this point
+                  if (point.x >= xIndex && point.y == yIndex)
+                    return 4; // row right of this point
+                  if (point.x <= xIndex && point.y <= yIndex)
+                    return 5; // top left to this point
+                  if (point.x >= xIndex && point.y > yIndex)
+                    return 6; // this point to bottom right
+                  if (point.x < xIndex && point.y >= yIndex)
+                    return 7; // bottom left to this point
+                  return 8; // this point to top right
+                }
+              )
+              //for each of those points, select the cell at the point's coordinates
+              .Select(group => group.Select(
+                coordinate => new {
+                    cell = Cells[coordinate.y][coordinate.x],
+                    x = coordinate.x,
+                    y = coordinate.y
+                  }
+              )
+              .Where(cellInfo => cellInfo.cell.CurrentState != CellState.Unavailable)
+              .OrderBy(cellInfo => Math.Pow(xIndex - cellInfo.x, 2) + Math.Pow(yIndex - cellInfo.y, 2))
+              .FirstOrDefault()
+              ?.cell
+            )
+              .Where(c => c != null)
+
+            //turn this into a readonly list of ICells
+            .ToList();
 
           return new Tuple<ICell, IReadOnlyCollection<ICell>>(cell, neighbors);
         }

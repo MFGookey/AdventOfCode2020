@@ -50,7 +50,14 @@ namespace MVConway.Cmd
       var finalBoard = gameOfLife.ToString();
 
       var occupiedSeats = finalBoard.ToCharArray().Count(c => c == '#');
+      Console.WriteLine(occupiedSeats);
 
+
+      survivalCriteria = new int[] {0, 1, 2, 3, 4};
+      gameOfLife = new Board(board, survivalCriteria, birthCriteria, interpreter, NeighborSelectionRule.QueensMove);
+      gameOfLife.StepWhileChange(new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token);
+      finalBoard = gameOfLife.ToString();
+      occupiedSeats = finalBoard.ToCharArray().Count(c => c == '#');
       Console.WriteLine(occupiedSeats);
     }
   }

@@ -223,5 +223,93 @@ namespace MVConway.Core.Tests.Life
       Assert.Equal(finalExpectedBoard, sut.ToString());
 
     }
+
+    [Fact]
+    public void Step_WhenValidDataAndQueensRules_SetsCellsAsExpected()
+    {
+      var data = new[]
+      {
+        "L.LL.LL.LL",
+        "LLLLLLL.LL",
+        "L.L.L..L..",
+        "LLLL.LL.LL",
+        "L.LL.LL.LL",
+        "L.LLLLL.LL",
+        "..L.L.....",
+        "LLLLLLLLLL",
+        "L.LLLLLL.L",
+        "L.LLLLL.LL"
+      };
+
+      var interpreter = new Func<char, CellState>((c) =>
+      {
+        switch (c)
+        {
+          case 'L':
+            return CellState.Empty;
+          case '.':
+            return CellState.Unavailable;
+          default:
+            throw new FormatException($"Shouldn't have this: '{c}'");
+        }
+      }
+      );
+
+      var birthCriteria = new int[] { 0 };
+      var survivalCriteria = new int[] { 0, 1, 2, 3, 4 };
+
+      var expectedStringBoard =
+        "L.LL.LL.LL\nLLLLLLL.LL\nL.L.L..L..\nLLLL.LL.LL\nL.LL.LL.LL\nL.LLLLL.LL\n..L.L.....\nLLLLLLLLLL\nL.LLLLLL.L\nL.LLLLL.LL";
+
+      var boards = new[]
+      {
+        new object[]{
+          "#.##.##.##\n#######.##\n#.#.#..#..\n####.##.##\n#.##.##.##\n#.#####.##\n..#.#.....\n##########\n#.######.#\n#.#####.##",
+          true
+        },
+
+        new object[]{
+          "#.LL.LL.L#\n#LLLLLL.LL\nL.L.L..L..\nLLLL.LL.LL\nL.LL.LL.LL\nL.LLLLL.LL\n..L.L.....\nLLLLLLLLL#\n#.LLLLLL.L\n#.LLLLL.L#",
+          true
+        },
+
+        new object[]{
+          "#.L#.##.L#\n#L#####.LL\nL.#.#..#..\n##L#.##.##\n#.##.#L.##\n#.#####.#L\n..#.#.....\nLLL####LL#\n#.L#####.L\n#.L####.L#",
+          true
+        },
+
+        new object[]{
+          "#.L#.L#.L#\n#LLLLLL.LL\nL.L.L..#..\n##LL.LL.L#\nL.LL.LL.L#\n#.LLLLL.LL\n..L.L.....\nLLLLLLLLL#\n#.LLLLL#.L\n#.L#LL#.L#",
+          true
+        },
+
+        new object[]{
+          "#.L#.L#.L#\n#LLLLLL.LL\nL.L.L..#..\n##L#.#L.L#\nL.L#.#L.L#\n#.L####.LL\n..#.#.....\nLLL###LLL#\n#.LLLLL#.L\n#.L#LL#.L#",
+          true
+        },
+
+        new object[]{
+          "#.L#.L#.L#\n#LLLLLL.LL\nL.L.L..#..\n##L#.#L.L#\nL.L#.LL.L#\n#.LLLL#.LL\n..#.L.....\nLLL###LLL#\n#.LLLLL#.L\n#.L#LL#.L#",
+          true
+        },
+
+        new object[]{
+          "#.L#.L#.L#\n#LLLLLL.LL\nL.L.L..#..\n##L#.#L.L#\nL.L#.LL.L#\n#.LLLL#.LL\n..#.L.....\nLLL###LLL#\n#.LLLLL#.L\n#.L#LL#.L#",
+          false
+        }
+      };
+
+      var sut = new Board(data, survivalCriteria, birthCriteria, interpreter, NeighborSelectionRule.QueensMove);
+
+
+      Assert.Equal(expectedStringBoard, sut.ToString());
+
+      foreach (var board in boards)
+      {
+        var willChange = sut.Step();
+        Assert.Equal((string)board[0], sut.ToString());
+        Assert.Equal((bool)board[1], willChange);
+      }
+    }
   }
 }
