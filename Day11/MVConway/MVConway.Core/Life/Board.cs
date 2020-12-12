@@ -260,7 +260,7 @@ namespace MVConway.Core.Life
 
       foreach (var cellNeighborMap in cellNeighborMaps)
       {
-        cellNeighborMap.cell.SetNeighbors(cellNeighborMap.neighbors);
+        cellNeighborMap.Item1.SetNeighbors(cellNeighborMap.Item2);
       }
     }
 
