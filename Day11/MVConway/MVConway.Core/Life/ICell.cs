@@ -17,7 +17,7 @@ namespace MVConway.Core.Life
     /// <summary>
     /// A listing of the neighboring cells to this one
     /// </summary>
-    public IReadOnlyCollection<ICell> Neighbors { get; }
+    public IReadOnlyCollection<IReadOnlyCollection<ICell>> Neighbors { get; }
 
     /// <summary>
     /// Calculate the state this cell will have in the next iteration
@@ -39,6 +39,6 @@ namespace MVConway.Core.Life
     /// Set the collection of neighbors of this cell
     /// </summary>
     /// <param name="neighbors">The neighbors of the current cell.</param>
-    public void SetNeighbors(IReadOnlyCollection<ICell> neighbors);
+    public void SetNeighbors(IReadOnlyCollection<IReadOnlyCollection<ICell>> neighbors);
   }
 }

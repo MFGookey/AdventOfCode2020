@@ -21,9 +21,9 @@ namespace MVConway.Core.Tests.Life
 
       Assert.Null(sut.Neighbors);
 
-      sut.SetNeighbors(new ICell[] { });
+      sut.SetNeighbors(new [] { new ICell[] { }});
 
-      Assert.Equal(new ICell[] { }, sut.Neighbors);
+      Assert.Equal(new[] { new ICell[] { } }, sut.Neighbors);
     }
 
     [Fact]
@@ -53,11 +53,11 @@ namespace MVConway.Core.Tests.Life
         (
           s) => s.ToString());
 
-      sut.SetNeighbors(new ICell[] { });
+      sut.SetNeighbors(new[] { new ICell[] { } });
 
       Assert.NotNull(sut.Neighbors);
 
-      Assert.Throws<MemberAccessException>(() => sut.SetNeighbors(new ICell[] { }));
+      Assert.Throws<MemberAccessException>(() => sut.SetNeighbors(new[] { new ICell[] { } }));
     }
 
     [Fact]
@@ -113,12 +113,12 @@ namespace MVConway.Core.Tests.Life
     [MemberData(nameof(ConstructorTestData))]
     public void Constructor_GivenValidData_SetsValuesAsExpected(
       CellState cellState,
-      Func<IReadOnlyCollection<ICell>, CellState, CellState> stateTransitionFunc,
+      Func<IReadOnlyCollection<IReadOnlyCollection<ICell>>, CellState, CellState> stateTransitionFunc,
       Func<CellState, string> displayFunc,
-      IReadOnlyCollection<ICell> neighbors,
+      IReadOnlyCollection<IReadOnlyCollection<ICell>> neighbors,
       IEnumerable<CellState> expectedStates,
       IDictionary<CellState, string> expectedStringMapping,
-      IReadOnlyCollection<ICell> expectedNeighbors
+      IReadOnlyCollection<IReadOnlyCollection<ICell>> expectedNeighbors
     )
     {
       var sut = new Cell(cellState, stateTransitionFunc, displayFunc);
@@ -146,13 +146,13 @@ namespace MVConway.Core.Tests.Life
         yield return new object[]
         {
           CellState.Empty,
-          new Func<IEnumerable<ICell>, CellState, CellState>((n, s) =>
+          new Func<IEnumerable<IEnumerable<ICell>>, CellState, CellState>((n, s) =>
           {
-            Assert.Equal(new ICell[]{ }, n);
+            Assert.Equal(new []{new ICell[]{ }}, n);
             return s;
           }),
           new Func<CellState, string>(s => "s"),
-          new ICell[]{},
+          new []{new ICell[]{ }},
           new[]
           {
             CellState.Empty,
@@ -162,13 +162,13 @@ namespace MVConway.Core.Tests.Life
           {
             { CellState.Empty, "s"}
           },
-          new ICell[]{ }
+          new []{new ICell[]{ }}
         };
 
         yield return new object[]
         {
           CellState.Empty,
-          new Func<IEnumerable<ICell>, CellState, CellState>((n, s) =>
+          new Func<IEnumerable<IEnumerable<ICell>>, CellState, CellState>((n, s) =>
           {
             // Indirectly prove that the neighbors we provided get passed into this func
             Assert.Null(n);

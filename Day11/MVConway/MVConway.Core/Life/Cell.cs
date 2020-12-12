@@ -14,7 +14,7 @@ namespace MVConway.Core.Life
     /// <summary>
     /// Given the neighbors and the current cell state, return a cell state.
     /// </summary>
-    private readonly Func<IReadOnlyCollection<ICell>, CellState, CellState> _nextStep;
+    private readonly Func<IReadOnlyCollection<IReadOnlyCollection<ICell>>, CellState, CellState> _nextStep;
 
     /// <summary>
     /// We need to precalculate the state so we can apply state changes to the entire board at once.  Store the precalculated state.
@@ -33,7 +33,7 @@ namespace MVConway.Core.Life
     private readonly SemaphoreSlim _lockout;
 
     /// <inheritdoc />
-    public IReadOnlyCollection<ICell> Neighbors { get; private set; }
+    public IReadOnlyCollection<IReadOnlyCollection<ICell>> Neighbors { get; private set; }
 
     /// <summary>
     /// Given a cell state, return a string to represent this cell
@@ -48,7 +48,7 @@ namespace MVConway.Core.Life
     /// <param name="display">A func to map cell states to strings</param>
     public Cell(
       CellState currentState,
-      Func<IReadOnlyCollection<ICell>, CellState, CellState> nextStep,
+      Func<IReadOnlyCollection<IReadOnlyCollection<ICell>>, CellState, CellState> nextStep,
       Func<CellState, string> display
     )
     {
@@ -62,7 +62,7 @@ namespace MVConway.Core.Life
     }
 
     /// <inheritdoc />
-    public void SetNeighbors(IReadOnlyCollection<ICell> neighbors)
+    public void SetNeighbors(IReadOnlyCollection<IReadOnlyCollection<ICell>> neighbors)
     {
       if (Neighbors != null)
       {
