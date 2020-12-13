@@ -20,6 +20,9 @@ namespace TurtleShip.Cmd
       var instructions = reader.ReadFileByLines(filePath);
       var ship = new Ship(instructions);
       Console.WriteLine(Math.Round(ship.ComputeManhattanDistanceToOrigin()));
+
+      var waypointShip = new WaypointShip(instructions);
+      Console.WriteLine(waypointShip.ComputeManhattanDistanceToOrigin());
     }
   }
 }

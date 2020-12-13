@@ -15,20 +15,20 @@ namespace TurtleShip.Core
       get; private set;
     }
 
-    public double Longitude { get; private set; }
+    public double Longitude { get; protected set; }
 
-    public double Latitude { get; private set; }
+    public double Latitude { get; set; }
 
-    public Ship(string[] instructions)
+    public Ship(string[] instructions) : this()
+    {
+      ProcessInstructions(instructions);
+    }
+
+    protected Ship()
     {
       Heading = 90; // Due east
       Longitude = 0;
       Latitude = 0;
-
-      foreach (var instruction in instructions)
-      {
-        ProcessInstruction(instruction);
-      }
     }
 
     public double ComputeManhattanDistanceToOrigin()
@@ -40,7 +40,7 @@ namespace TurtleShip.Core
     /// Turn the ship either left or right.
     /// </summary>
     /// <param name="change">The number of degrees to add or subtract from our current heading</param>
-    private void SetHeading(int change)
+    protected virtual void SetHeading(int change)
     {
       // North is 0
       // East is 90
@@ -53,7 +53,7 @@ namespace TurtleShip.Core
     /// Adjust our latitude directly.  North is addition, South is subtraction.
     /// </summary>
     /// <param name="toAdjust">The amount of units to adjust our latutudinal position.</param>
-    private void AdjustLatitude(double toAdjust)
+    protected virtual void AdjustLatitude(double toAdjust)
     {
       Latitude += toAdjust;
     }
@@ -62,7 +62,7 @@ namespace TurtleShip.Core
     /// Adjust our longitude directly.  West is addition, East is subtraction.
     /// </summary>
     /// <param name="toAdjust">The amount of units to adjust our longitudinal position.</param>
-    private void AdjustLongitude(double toAdjust)
+    protected virtual void AdjustLongitude(double toAdjust)
     {
       Longitude += toAdjust;
     }
@@ -71,20 +71,32 @@ namespace TurtleShip.Core
     /// Sail along our current heading.  Forward is positive, backward is negative.
     /// </summary>
     /// <param name="distance">The distance to sail on our current heading.</param>
-    private void Sail(int distance)
+    protected virtual void Sail(int distance)
     {
       // Here's the fun part.  Based on our heading, the change in position is split into two components.
       // Our longitudinal component is equivalent to the -sin() of our bearing
       // Our latitudinal component is equivalent to the cos() of our bearing.
-      AdjustLatitude(-1*Math.Sin(Math.PI*Heading/180)*distance);
+      AdjustLongitude(-1*Math.Cos(Math.PI*(90-Heading)/180)*distance);
 
       // Here's the fun part.  Based on our heading, the change in position is split into two components.
       // Our longitudinal component is equivalent to the -sin() of our bearing
       // Our latitudinal component is equivalent to the cos() of our bearing.
-      AdjustLatitude(Math.Cos(Math.PI * Heading / 180) * distance);
+      AdjustLatitude(Math.Sin(Math.PI * (90 - Heading) / 180) * distance);
     }
 
-    private void ProcessInstruction(string instruction)
+    /// <summary>
+    /// Process a set of instructions one by one
+    /// </summary>
+    /// <param name="instructions">The instructions to process.</param>
+    public void ProcessInstructions(string[] instructions)
+    {
+      foreach (var instruction in instructions)
+      {
+        ProcessInstruction(instruction);
+      }
+    }
+
+    protected void ProcessInstruction(string instruction)
     {
       var match = Regex.Match(instruction, @"^([NSEWLRF])(\d+)$");
       string operation = match.Groups[1].Value;

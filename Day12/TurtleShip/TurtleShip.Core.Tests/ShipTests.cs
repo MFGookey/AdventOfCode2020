@@ -90,6 +90,8 @@ namespace TurtleShip.Core.Tests
       });
 
       Assert.Equal(25, sut.ComputeManhattanDistanceToOrigin());
+      Assert.Equal(-17, sut.Longitude);
+      Assert.Equal(-8, sut.Latitude);
     }
   }
 }
