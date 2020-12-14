@@ -43,9 +43,40 @@ namespace TuringBusses.Core
         .product;
     }
 
-    public int WinContest(string busses)
+    /// <summary>
+    /// Given a comma delimited string of busses, find a timestamp on the bus schedule where: each bus leaves in order in its sequence one after the next.  Some busses are out of service and only take up a time slot.
+    /// </summary>
+    /// <param name="busses">A comma delimited string of busIDs for busses in service, and x for busses not in service</param>
+    /// <returns>The timestamp when the sequence begins.</returns>
+    public long WinContest(string busses)
     {
-      throw new NotImplementedException();
+      var busIDs = _formatter.FormatRecord(busses, ",", true);
+      return FindEarliestTimestamp(busIDs);
+    }
+
+    long FindEarliestTimestamp(IEnumerable<string> schedule)
+    {
+      var processedBusIDs = schedule.Select(
+                  (
+                    busId,
+                    busScheduleIndex) =>
+                  {
+                    int? nullableId = null;
+                    if (int.TryParse(busId, out int parsedId))
+                    {
+                      nullableId = parsedId;
+                    }
+
+                    return new
+                    {
+                      index = busScheduleIndex,
+                      busId = nullableId
+                    };
+                  }
+                  )
+                  .Where(record => record.busId.HasValue)
+                  .ToDictionary(record => (long)record.busId.Value, record => (long)(record.busId.Value - record.index) % (long)record.busId.Value);
+      return ChineseRemainderTheorem.Solve(processedBusIDs.Keys, processedBusIDs.Values);
     }
   }
 }

@@ -31,6 +31,10 @@ namespace TuringBusses.Cmd
       var product = scheduler.GetNextBusProduct(timeStamp, records.Skip(1).First());
 
       Console.WriteLine(product);
+
+      var timeStamp2 = scheduler.WinContest(records.Skip(1).First());
+
+      Console.WriteLine(timeStamp2);
     }
   }
 }
