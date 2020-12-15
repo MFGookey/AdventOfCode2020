@@ -34,6 +34,11 @@ namespace MaskUp.Core
       }
     }
 
+    /// <summary>
+    /// Directly get and set memory addresses
+    /// </summary>
+    /// <param name="index">The memory address to get or set</param>
+    /// <returns>The value at the given address</returns>
     public long this[long index]
     {
       get
