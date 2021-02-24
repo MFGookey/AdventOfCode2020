@@ -12,7 +12,7 @@ namespace MaskUp.Core
   public class MaskableMemory
   {
     
-    private Dictionary<long, long> _internalStore;
+    private readonly Dictionary<long, long> _internalStore;
 
     private Dictionary<int, bool> _mask;
 
@@ -48,8 +48,20 @@ namespace MaskUp.Core
 
       set
       {
-        _internalStore[index] = applyMask(value);
+        SetMemoryLocation(_mask, _internalStore, index, value);
       }
+    }
+
+    /// <summary>
+    /// Given a mask, a dictionary representing memory, an index, and a value, set the relevant memory addresses
+    /// </summary>
+    /// <param name="mask">The mask to apply to the inputs</param>
+    /// <param name="memory">The memory container</param>
+    /// <param name="index">The index in memory to attempt to set</param>
+    /// <param name="value">The value to attempt to set</param>
+    private void SetMemoryLocation(Dictionary<int, bool> mask, Dictionary<long, long> memory, long index, long value)
+    {
+      memory[index] = ApplyMask(mask, value);
     }
 
     /// <summary>
@@ -57,15 +69,15 @@ namespace MaskUp.Core
     /// </summary>
     /// <param name="value">The value to which the mask must be applied</param>
     /// <returns>A new value based on the given value with a mask applied</returns>
-    private long applyMask(long value)
+    private long ApplyMask(Dictionary<int, bool> mask, long value)
     {
       var valArray = new BitArray(BitConverter.GetBytes(value));
       return valArray.Cast<bool>().Select((bit, index) =>
       {
         // if the condensed mask has our index in it, force the bit to match the mask's
-        if (_mask.Keys.Contains(index))
+        if (mask.Keys.Contains(index))
         {
-          return _mask[index];
+          return mask[index];
         }
         return bit;
       })
@@ -121,7 +133,7 @@ namespace MaskUp.Core
     /// <param name="instructions">The instructions to execute</param>
     public void ProcessInstructions(string[] instructions)
     {
-      var maskRegex = new Regex("^mask\\s=\\s([X10]{36})$", RegexOptions.Multiline | RegexOptions.Compiled);
+      var maskRegex = new Regex($"^mask\\s=\\s([X10]{{{WordLength}}})$", RegexOptions.Multiline | RegexOptions.Compiled);
 
       var memoryRegex = new Regex("^mem\\[(\\d+)\\]\\s=\\s(\\d+)$", RegexOptions.Multiline | RegexOptions.Compiled);
 
@@ -140,6 +152,10 @@ namespace MaskUp.Core
           if (match.Success)
           {
             this[long.Parse(match.Groups[1].Value)] = long.Parse(match.Groups[2].Value);
+          }
+          else
+          {
+            throw new FormatException($"Could not parse the instruction \"{instruction}\"");
           }
         }
       }

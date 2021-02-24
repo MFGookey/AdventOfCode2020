@@ -37,6 +37,19 @@ namespace Common.Utilities.Tests.Formatter
       );
     }
 
+    [Fact]
+    public void RecordFormatter_DefaultConstructor_ThrowsNullReferenceExceptionOnFileRead()
+    {
+      var sut = new sut.RecordFormatter();
+      Assert.Throws<NullReferenceException>(
+        () => sut.FormatFile(string.Empty, string.Empty, false)
+        );
+
+      Assert.Throws<NullReferenceException>(
+        () => sut.FormatFile(string.Empty, string.Empty, false, false)
+        );
+    }
+
     [Theory]
     [MemberData(nameof(SampleRecordsUnNormalizedLineEndings))]
     public void FormatRecord_GivenRecordsAndDefaultLineEndingNormalization_ReturnsExpectedRecords(
@@ -46,7 +59,7 @@ namespace Common.Utilities.Tests.Formatter
       string[] expectedRecords
     )
     {
-      sut.IRecordFormatter sut = new sut.RecordFormatter(null);
+      sut.IRecordFormatter sut = new sut.RecordFormatter();
 
       var result = sut.FormatRecord(records, recordDelimiter, removeBlankRecords);
 
@@ -62,7 +75,7 @@ namespace Common.Utilities.Tests.Formatter
       IEnumerable<IEnumerable<string>> expectedRecords
     )
     {
-      sut.IRecordFormatter sut = new sut.RecordFormatter(null);
+      sut.IRecordFormatter sut = new sut.RecordFormatter();
 
       var result = sut.FormatSubRecords(records, subRecordDelimiter, removeBlankRecords);
 
@@ -99,7 +112,7 @@ namespace Common.Utilities.Tests.Formatter
       string[] expectedRecords
     )
     {
-      sut.IRecordFormatter sut = new sut.RecordFormatter(null);
+      sut.IRecordFormatter sut = new sut.RecordFormatter();
 
       var result = sut.FormatRecord(records, recordDelimiter, removeBlankRecords, normalizeLineEndings);
 
@@ -116,7 +129,7 @@ namespace Common.Utilities.Tests.Formatter
       IEnumerable<IEnumerable<string>> expectedRecords
     )
     {
-      sut.IRecordFormatter sut = new sut.RecordFormatter(null);
+      sut.IRecordFormatter sut = new sut.RecordFormatter();
 
       var result = sut.FormatSubRecords(records, subRecordDelimiter, removeBlankRecords, normalizeLineEndings);
 

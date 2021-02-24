@@ -64,7 +64,7 @@ namespace TurtleShip.Core.Tests
       var sut = new Ship(new[] { "L60" });
       Assert.Equal(0, sut.Latitude);
       Assert.Equal(0, sut.Longitude);
-      Assert.Equal(00, sut.ComputeManhattanDistanceToOrigin());
+      Assert.Equal(0, sut.ComputeManhattanDistanceToOrigin());
       Assert.Equal(30, sut.Heading);
     }
 

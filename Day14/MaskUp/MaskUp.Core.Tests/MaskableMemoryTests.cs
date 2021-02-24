@@ -62,6 +62,22 @@ namespace MaskUp.Core.Tests
     }
 
     [Fact]
+    public void ProcessInstructions_GivenBadInstruction_ThrowsFormatException()
+    {
+      var instructions = new[]
+      {
+        "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X",
+        "mem[8] = 11",
+        "mem[9] = 11",
+        "mem[7] = 101",
+        "mem[8] = 0"
+      };
+
+      var sut = new MaskableMemory();
+      Assert.Throws<FormatException>(() => sut.ProcessInstructions(instructions));
+    }
+
+    [Fact]
     public void Dump_WhenMemoryHasBeenSet_ReturnsExpectedValues()
     {
       var instructions = new[]

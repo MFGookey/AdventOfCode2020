@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Common.Utilities.Formatter
 {
@@ -64,6 +65,39 @@ namespace Common.Utilities.Formatter
     /// <returns>An enumerable of strings representing the records.</returns>
     public IEnumerable<string> FormatFile(string filePath, string recordDelimiter, bool removeBlankRecords, bool normalizeLineEndings);
 
+    /// <summary>
+    /// Given a delimited string of records, break them up by a regex pattern
+    /// </summary>
+    /// <param name="records">The records to parse</param>
+    /// <param name="pattern">The pattern to use in parsing</param>
+    /// <returns>A list of matches</returns>
+    public IList<Match> FormatRecordWithRegex(string records, string pattern);
+
+    /// <summary>
+    /// Given a file path, read in the file and break it up by a regex pattern
+    /// </summary>
+    /// <param name="filePath">The path to the file to read.</param>
+    /// <param name="pattern">The pattern to use in parsing</param>
+    /// <returns>A list of matches</returns>
+    public IList<Match> FormatFileWithRegex(string filePath, string pattern);
+
+    /// <summary>
+    /// Given a delimited string of records, break them up by a regex pattern
+    /// </summary>
+    /// <param name="records">The records to parse</param>
+    /// <param name="pattern">The pattern to use in parsing</param>
+    /// <param name="options">Regex Options to apply</param>
+    /// <returns>A list of matches</returns>
+    public IList<Match> FormatRecordWithRegex(string records, string pattern, RegexOptions options);
+
+    /// <summary>
+    /// Given a file path, read in the file and break it up by a regex pattern
+    /// </summary>
+    /// <param name="filePath">The path to the file to read.</param>
+    /// <param name="pattern">The pattern to use in parsing</param>
+    /// <param name="options">Regex Options to apply</param>
+    /// <returns>A list of matches</returns>
+    public IList<Match> FormatFileWithRegex(string filePath, string pattern, RegexOptions options);
   }
 }
 
